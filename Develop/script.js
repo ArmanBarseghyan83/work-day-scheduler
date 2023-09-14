@@ -1,6 +1,7 @@
 $(document).ready(function () {
   const timeBlock = $(".time-block");
   const saveBtn = $("button");
+  const message = $("h2");
   const currentDay = dayjs().format("dddd, MMMM D");
   const currentHour = dayjs().hour();
   const scheduleData = JSON.parse(localStorage.getItem("data")) || [];
@@ -18,9 +19,13 @@ $(document).ready(function () {
       }
     });
 
-    scheduleData.push({ id: parentId, text });
-
-    localStorage.setItem("data", JSON.stringify(scheduleData));
+    if (text) {
+      message.css("opacity", "1");
+      scheduleData.push({ id: parentId, text });
+      localStorage.setItem("data", JSON.stringify(scheduleData));
+    } else {
+      message.css("opacity", "0");
+    }
   });
 
   timeBlock.each(function () {
@@ -32,6 +37,7 @@ $(document).ready(function () {
       $(this).addClass("future");
     } else {
       $(this).addClass("past");
+      $(this).children().attr("disabled", "true");
     }
 
     scheduleData.forEach((data) => {
