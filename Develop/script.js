@@ -8,10 +8,12 @@ $(document).ready(function () {
 
   $("#currentDay").text(currentDay);
 
+  // Add addEventListener to the button for saving the data.
   saveBtn.on("click", function () {
     const text = $(this).siblings("textarea").val();
     const parentId = $(this).parent().attr("id");
 
+  // Remove old data if it was changed
     scheduleData.forEach((data) => {
       if (data.id === parentId) {
         const index = scheduleData.indexOf(data);
@@ -19,6 +21,7 @@ $(document).ready(function () {
       }
     });
 
+  // Save in the localStorage and display message only if the input is not empty.
     if (text) {
       message.css("opacity", "1");
       scheduleData.push({ id: parentId, text });
@@ -28,6 +31,7 @@ $(document).ready(function () {
     }
   });
 
+  // Add class to each timeBlock based on current hour.
   timeBlock.each(function () {
     const blockId = $(this).attr("id");
 
@@ -37,12 +41,13 @@ $(document).ready(function () {
       $(this).addClass("future");
     } else {
       $(this).addClass("past");
-      $(this).children().attr("disabled", "true");
     }
 
+    // Add to the timeBlock its corresponding text.
     scheduleData.forEach((data) => {
       data.id === blockId && $(this).children().eq(1).val(data.text);
     });
   });
 });
+
 
